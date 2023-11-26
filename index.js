@@ -17,7 +17,7 @@ io.on('connection', (socket) => {
     const clientID = socket.id;
     // console.log(clientID);
     // console.log('a user connected');
-
+    const username = socket.handshake.headers.username;
     // Add connected user
     connectedUsers.push({ clientID, username });
     sendUserListToClients();
