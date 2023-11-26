@@ -19,9 +19,8 @@ io.on('connection', (socket) => {
     // console.log('a user connected');
 
     // Add connected user
-    connectedUsers.push(clientID);
-    const clientHeaders = socket.handshake.headers;
-    console.log('Client Headers:', clientHeaders);
+    usersConnected.push({ clientID, username });
+    sendUserListToClients();
 
     // Print connected users
     console.log("Connected users: " + connectedUsers);
@@ -43,4 +42,9 @@ io.on('connection', (socket) => {
 server.listen(3000, '0.0.0.0', () => {
     console.log('server running at http://3.71.101.250:3000');
   });
+
+function sendUserListToClients() {
+    const usernames = connectedUsers.map((user) => user.username);
+    io.emit("userList", usernames);
+}
   
