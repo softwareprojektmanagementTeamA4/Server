@@ -37,6 +37,10 @@ io.on('connection', (socket) => {
     socket.on('chat message', (msg) => {
         io.emit("chat message", msg);
     })
+
+    socket.on("getPlayerID", () => {
+        io.to(clientID).emit("getPlayerID", clientID);
+    })
 })
 
 server.listen(3000, '0.0.0.0', () => {
@@ -45,6 +49,6 @@ server.listen(3000, '0.0.0.0', () => {
 
 function sendUserListToClients() {
     const usernames = connectedUsers.map((user) => user.username);
-    io.emit("userList", usernames);
+    io.emit("playersConnected", usernames);
 }
   
