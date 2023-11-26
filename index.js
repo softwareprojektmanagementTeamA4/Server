@@ -19,7 +19,7 @@ io.on('connection', (socket) => {
     // console.log('a user connected');
 
     // Add connected user
-    usersConnected.push({ clientID, username });
+    connectedUsers.push({ clientID, username });
     sendUserListToClients();
 
     // Print connected users
