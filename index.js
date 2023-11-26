@@ -3,6 +3,7 @@ const { createServer } = require('http');
 const {join} = require('path');
 const {Server} = require('socket.io');
 
+let connectedUsers = [];
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
@@ -13,12 +14,19 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    const clientIP = socket.id;
-    console.log(clientIP);
-    console.log('a user connected');
+    const clientID = socket.id;
+    // console.log(clientID);
+    // console.log('a user connected');
+
+    // Add connected user
+    connectedUsers.push(clientID);
+
+    // Print connected users
+    console.log("Connected users: " + connectedUsers);
+
     socket.on('disconnect', () => {
-	const clientIP = socket.handshake.address;
-	console.log("Disconnect", clientIP);
+	const clientID = socket.handshake.address;
+	console.log("Disconnect", clientID);
         console.log('user disconnected');
       });
     socket.on('chat message', (msg) => {
