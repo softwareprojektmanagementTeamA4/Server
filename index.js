@@ -48,7 +48,10 @@ server.listen(3000, '0.0.0.0', () => {
   });
 
 function sendUserListToClients() {
+    // Usernames als JSON
     const usernames = connectedUsers.map((user) => user.username);
-    io.emit("playersConnected", usernames);
+    const usernamesJSON = JSON.stringify(usernames);
+
+    io.emit("playersConnected", usernamesJSON);
 }
   
