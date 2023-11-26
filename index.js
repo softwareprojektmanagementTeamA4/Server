@@ -25,17 +25,17 @@ io.on('connection', (socket) => {
     console.log("Connected users: " + connectedUsers);
 
     socket.on('disconnect', () => {
-	const clientID = socket.handshake.address;
-	console.log("Disconnect", clientID);
         console.log('user disconnected');
-      });
+        connectedUsers = connectedUsers.filter((user) => user !== clientID);
+        console.log("Connected users: " + connectedUsers);
+    });
+
     socket.on('chat message', (msg) => {
         console.log(msg);
     })
     socket.on('chat message', (msg) => {
         io.emit("chat message", msg);
     })
-   
 })
 
 server.listen(3000, '0.0.0.0', () => {
