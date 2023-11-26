@@ -3,7 +3,7 @@ const { createServer } = require('http');
 const {join} = require('path');
 const {Server} = require('socket.io');
 
-let connectedUsers = [];
+let connectedUsers = {};
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
@@ -19,7 +19,7 @@ io.on('connection', (socket) => {
     // console.log('a user connected');
     const username = socket.handshake.headers.username;
     // Add connected user
-    connectedUsers.push({ clientID, username });
+    connectedUsers[clientID] = username;
     sendUserListToClients();
 
     // Print connected users
@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
-        connectedUsers = connectedUsers.filter((user) => user !== clientID);
+        delete connectedUsers[clientID];
         console.log("Connected users: " + connectedUsers);
     });
 
