@@ -20,6 +20,7 @@ io.on('connection', (socket) => {
     const username = socket.handshake.headers.username;
     // Add connected user
     connectedUsers[clientID] = username;
+    console.log("connectedUsers: " + connectedUsers[clientID]);
     sendUserListToClients();
 
     // Print connected users
@@ -49,9 +50,8 @@ server.listen(3000, '0.0.0.0', () => {
 
 function sendUserListToClients() {
     // Usernames als JSON
-    const usernames = connectedUsers.map((user) => user.username);
-    const usernamesJSON = JSON.stringify(usernames);
+    const usernames = Object.values(connectedUsers);
 
-    io.emit("playersConnected", usernamesJSON);
+    io.emit('playersConnected', { usernames });
 }
   
