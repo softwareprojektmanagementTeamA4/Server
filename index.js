@@ -20,7 +20,7 @@ io.on('connection', (socket) => {
     const username = socket.handshake.headers.username;
     // Add connected user
     connectedUsers[clientID] = username;
-    console.log("connectedUsers: " + connectedUsers[clientID]);
+    console.log("connectedUsers: " + username);
     sendUserListToClients();
 
     // Print connected users
