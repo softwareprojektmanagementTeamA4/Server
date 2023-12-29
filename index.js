@@ -45,9 +45,9 @@ io.on('connection', (socket) => {
         io.to(clientID).emit("getPlayerID", clientID);
     })
 
-    socket.on("npc_car_date", (data) => {
+    socket.on("npc_car_data", (data) => {
         console.log(data);
-        io.emit("receive_npc_car_date", data);
+        io.emit("receive_npc_car_data", data);
     })
 
     // socket.on("getHostID", () => {
