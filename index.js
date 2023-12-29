@@ -7,6 +7,7 @@ let connectedUsers = {};
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
+const hostID = null;
 
 
 app.get('/', (req, res) => {
@@ -20,6 +21,12 @@ io.on('connection', (socket) => {
     // console.log('a user connected');
     const username = socket.handshake.headers.username;
     // Add connected user
+    
+    //if connectedUsers is empty
+    if (Object.keys(connectedUsers).length == 0) {
+        hostID = clientID;
+    }
+    io.to(clientID).emit("getHostID", hostID);
     connectedUsers[clientID] = username;
     //console.log("connectedUsers: " + username);**
     sendUserListToClients();
@@ -36,6 +43,10 @@ io.on('connection', (socket) => {
     socket.on("getPlayerID", () => {
         io.to(clientID).emit("getPlayerID", clientID);
     })
+
+    // socket.on("getHostID", () => {
+    //     io.to(clientID).emit();
+    // })
 
     socket.on("player_data", (data) => {
         console.log(data);
