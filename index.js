@@ -7,7 +7,7 @@ let connectedUsers = {};
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
-const hostID = null;
+let hostID = null;
 
 
 app.get('/', (req, res) => {
