@@ -38,7 +38,8 @@ io.on('connection', (socket) => {
 
     socket.on("player_data", (data) => {
         console.log(data);
-        sendPositionToClients(data);
+        let position = {clientID: data};
+        sendPositionToClients(position);
     }
     )
 });
@@ -53,7 +54,7 @@ function sendUserListToClients() {
     io.emit('playersConnected', { usernames });
 }
 
-function sendPositionToClients(data) {
+function sendPositionToClients(data, id) {
     io.emit('receive_data', data);
 }
   
