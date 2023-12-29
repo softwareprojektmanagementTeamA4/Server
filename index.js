@@ -26,6 +26,7 @@ io.on('connection', (socket) => {
     if (Object.keys(connectedUsers).length == 0) {
         hostID = clientID;
     }
+
     io.to(clientID).emit("getHostID", hostID);
     connectedUsers[clientID] = username;
     //console.log("connectedUsers: " + username);**
@@ -44,12 +45,17 @@ io.on('connection', (socket) => {
         io.to(clientID).emit("getPlayerID", clientID);
     })
 
+    socket.on("npc_car_date", (data) => {
+        console.log(data);
+        io.emit("receive_npc_car_date", data);
+    })
+
     // socket.on("getHostID", () => {
     //     io.to(clientID).emit();
     // })
 
     socket.on("player_data", (data) => {
-        console.log(data);
+        //console.log(data);
         let id = socket.id;
         let position = {};
         position[id] = data;
