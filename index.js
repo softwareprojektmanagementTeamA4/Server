@@ -42,8 +42,12 @@ io.on('connection', (socket) => {
     socket.on("getPlayerID", () => {
         io.to(clientID).emit("getPlayerID", clientID);
     })
-})
 
+    socket.on("player_data", (data) => {
+        console.log(data);
+    }
+    )
+});
 server.listen(3000, '0.0.0.0', () => {
     console.log('server running at http://35.246.239.15:3000');
   });
