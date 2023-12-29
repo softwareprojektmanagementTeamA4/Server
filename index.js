@@ -15,12 +15,13 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
     const clientID = socket.id;
+    io.to(clientID).emit("getPlayerID", clientID);
     // console.log(clientID);
     // console.log('a user connected');
     const username = socket.handshake.headers.username;
     // Add connected user
     connectedUsers[clientID] = username;
-    //console.log("connectedUsers: " + username);
+    //console.log("connectedUsers: " + username);**
     sendUserListToClients();
 
     // Print connected users
