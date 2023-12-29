@@ -45,7 +45,7 @@ io.on('connection', (socket) => {
 })
 
 server.listen(3000, '0.0.0.0', () => {
-    console.log('server running at http://3.71.101.250:3000');
+    console.log('server running at http://35.246.239.15:3000');
   });
 
 function sendUserListToClients() {
