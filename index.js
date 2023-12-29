@@ -50,10 +50,15 @@ server.listen(3000, '0.0.0.0', () => {
 
 function sendUserListToClients() {
     // Usernames als JSON
-    const usernames = connectedUsers.map(function(tupel) {
-        return tupel[1];
-    });
-    Console.log("usernames: ", usernames);
+    // const usernames = connectedUsers.map(function(tupel) {
+    //     return tupel[1];
+    // });
+    
+    let output = [];
+
+    for (let i = 0; i < connectedUsers.length; i++) {
+        output.push(connectedUsers[i][1]);
+    }
 
     io.emit('playersConnected', { usernames });
 }
