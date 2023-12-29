@@ -3,7 +3,7 @@ const { createServer } = require('http');
 const {join} = require('path');
 const {Server} = require('socket.io');
 
-let connectedUsers = {};
+let connectedUsers = [];
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
@@ -20,7 +20,7 @@ io.on('connection', (socket) => {
     // console.log('a user connected');
     const username = socket.handshake.headers.username;
     // Add connected user
-    connectedUsers[clientID] = username;
+    connectedUsers.push({clientID, username});
     // 
     if (Object.keys(connectedUsers).length == 1) {
         host = clientID;
@@ -37,12 +37,7 @@ io.on('connection', (socket) => {
         console.log("connectedUsers: ", JSON.stringify(connectedUsers, null, 2));
     });
 
-    socket.on('chat message', (msg) => {
-        console.log(msg);
-    })
-    socket.on('chat message', (msg) => {
-        io.emit("chat message", msg);
-    })
+    
 
     socket.on("getPlayerID", () => {
         io.to(clientID).emit("getPlayerID", clientID);
@@ -55,7 +50,9 @@ server.listen(3000, '0.0.0.0', () => {
 
 function sendUserListToClients() {
     // Usernames als JSON
-    const usernames = Object.values(connectedUsers);
+    const usernames = connectedUsers.map(function(tupel) {
+        return tupel[1];
+    })
 
     io.emit('playersConnected', { usernames });
 }
