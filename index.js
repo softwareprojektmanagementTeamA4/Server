@@ -3,16 +3,15 @@ const { createServer } = require('http');
 const {join} = require('path');
 const {Server} = require('socket.io');
 
-let connectedUsers = [];
+let connectedUsers = {};
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
-let host;
 
 
-//app.get('/', (req, res) => {
-  //res.sendFile(join(__dirname, 'index.html'));
-//});
+app.get('/', (req, res) => {
+  res.sendFile(join(__dirname, 'index.html'));
+});
 
 io.on('connection', (socket) => {
     const clientID = socket.id;
@@ -20,24 +19,25 @@ io.on('connection', (socket) => {
     // console.log('a user connected');
     const username = socket.handshake.headers.username;
     // Add connected user
-    connectedUsers.push({clientID, username});
-    // 
-    if (Object.keys(connectedUsers).length == 1) {
-        host = clientID;
-
-    }
-    console.log("host: ", host);
-    console.log("connectedUsers: ", JSON.stringify(connectedUsers, null, 2));
+    connectedUsers[clientID] = username;
+    console.log("connectedUsers: " + username);
     sendUserListToClients();
 
+    // Print connected users
+    console.log("Connected users: " + connectedUsers);
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
         delete connectedUsers[clientID];
-        console.log("connectedUsers: ", JSON.stringify(connectedUsers, null, 2));
+        console.log("Connected users: " + connectedUsers);
     });
 
-    
+    socket.on('chat message', (msg) => {
+        console.log(msg);
+    })
+    socket.on('chat message', (msg) => {
+        io.emit("chat message", msg);
+    })
 
     socket.on("getPlayerID", () => {
         io.to(clientID).emit("getPlayerID", clientID);
@@ -45,21 +45,13 @@ io.on('connection', (socket) => {
 })
 
 server.listen(3000, '0.0.0.0', () => {
-    console.log('server running');
+    console.log('server running at http://3.71.101.250:3000');
   });
 
 function sendUserListToClients() {
     // Usernames als JSON
-    // const usernames = connectedUsers.map(function(tupel) {
-    //     return tupel[1];
-    // });
-    
-    let output = [];
+    const usernames = Object.values(connectedUsers);
 
-    for (let i = 0; i < connectedUsers.length; i++) {
-        output.push(connectedUsers[i][1]);
-    }
-
-    io.emit('playersConnected', { output });
+    io.emit('playersConnected', { usernames });
 }
   
