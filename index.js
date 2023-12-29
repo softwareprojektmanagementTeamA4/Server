@@ -32,19 +32,13 @@ io.on('connection', (socket) => {
         console.log("Connected users: " + connectedUsers);
     });
 
-    socket.on('chat message', (msg) => {
-        console.log(msg);
-    })
-    socket.on('chat message', (msg) => {
-        io.emit("chat message", msg);
-    })
-
     socket.on("getPlayerID", () => {
         io.to(clientID).emit("getPlayerID", clientID);
     })
 
     socket.on("player_data", (data) => {
         console.log(data);
+        sendPositionToClients(data);
     }
     )
 });
@@ -57,5 +51,9 @@ function sendUserListToClients() {
     const usernames = Object.values(connectedUsers);
 
     io.emit('playersConnected', { usernames });
+}
+
+function sendPositionToClients(data) {
+    io.emit('receive_data', data);
 }
   
