@@ -29,6 +29,8 @@ io.on('connection', (socket) => {
 
     io.to(clientID).emit("getHostID", hostID);
     connectedUsers[clientID] = username;
+
+    
     //console.log("connectedUsers: " + username);**
     sendUserListToClients();
 
