@@ -60,6 +60,6 @@ function sendUserListToClients() {
         output.push(connectedUsers[i][1]);
     }
 
-    io.emit('playersConnected', { usernames });
+    io.emit('playersConnected', { output });
 }
   
