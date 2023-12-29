@@ -52,7 +52,8 @@ server.listen(3000, '0.0.0.0', () => {
 
 function sendUserListToClients() {
     // Usernames als JSON
-    io.emit('playersConnected', connectedUsers );
+
+    io.emit('playersConnected', connectedUsers);
 }
 
 function sendPositionToClients(data, id) {
