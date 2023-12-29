@@ -52,7 +52,8 @@ function sendUserListToClients() {
     // Usernames als JSON
     const usernames = connectedUsers.map(function(tupel) {
         return tupel[1];
-    })
+    });
+    Console.log("usernames: ", usernames);
 
     io.emit('playersConnected', { usernames });
 }
