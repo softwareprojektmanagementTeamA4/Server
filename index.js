@@ -20,16 +20,16 @@ io.on('connection', (socket) => {
     const username = socket.handshake.headers.username;
     // Add connected user
     connectedUsers[clientID] = username;
-    console.log("connectedUsers: " + username);
+    //console.log("connectedUsers: " + username);
     sendUserListToClients();
 
     // Print connected users
-    console.log("Connected users: " + connectedUsers);
+    console.log("connectedUsers: ", JSON.stringify(connectedUsers, null, 2));
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
         delete connectedUsers[clientID];
-        console.log("Connected users: " + connectedUsers);
+        console.log("connectedUsers: ", JSON.stringify(connectedUsers, null, 2));
     });
 
     socket.on("getPlayerID", () => {
