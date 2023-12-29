@@ -39,7 +39,8 @@ io.on('connection', (socket) => {
     socket.on("player_data", (data) => {
         console.log(data);
         let id = socket.id;
-        let position = {id: data};
+        let position = {};
+        position[id] = data;
         sendPositionToClients(position);
     }
     )
