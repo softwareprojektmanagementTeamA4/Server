@@ -67,7 +67,6 @@ io.on('connection', (socket) => {
         let position = {};
         position[id] = data;
         sendPositionToClients(position);
-        console.log(position);
     }
     )
 });
