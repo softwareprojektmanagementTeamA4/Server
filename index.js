@@ -53,7 +53,7 @@ io.on('connection', (socket) => {
         io.emit("receive_npc_car_data", data);
     })
 
-    socket.on("player_cars_data", (data) => {
+    socket.on("player_start_positions_data", (data) => {
         //console.log(data);
         cars_data = data;
         io.emit("receive_start_position", data);
