@@ -54,7 +54,7 @@ io.on('connection', (socket) => {
 
     socket.on("player_cars_data", (data) => {
         //console.log(data);
-        io.emit("receive_player_cars_data", data);
+        io.emit("receive_start_position", data);
     })
 
     // socket.on("getHostID", () => {
