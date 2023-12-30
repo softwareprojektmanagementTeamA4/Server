@@ -8,6 +8,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server);
 let hostID = null;
+let cars_data;
 
 
 app.get('/', (req, res) => {
@@ -54,8 +55,14 @@ io.on('connection', (socket) => {
 
     socket.on("player_cars_data", (data) => {
         //console.log(data);
+        cars_data = data;
         io.emit("receive_start_position", data);
     })
+
+    socket.on("request_start_position", () => {
+        io.emit("receive_start_position", cars_data);
+    })
+        
 
     // socket.on("getHostID", () => {
     //     io.to(clientID).emit();
