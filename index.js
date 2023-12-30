@@ -52,6 +52,11 @@ io.on('connection', (socket) => {
         io.emit("receive_npc_car_data", data);
     })
 
+    socket.on("player_cars_data", (data) => {
+        //console.log(data);
+        io.emit("receive_player_cars_data", data);
+    })
+
     // socket.on("getHostID", () => {
     //     io.to(clientID).emit();
     // })
@@ -62,6 +67,7 @@ io.on('connection', (socket) => {
         let position = {};
         position[id] = data;
         sendPositionToClients(position);
+        console.log(position);
     }
     )
 });
