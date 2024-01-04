@@ -8,6 +8,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server);
 let hostID = null;
+let order = {};
 let cars_data;
 
 
@@ -69,11 +70,11 @@ io.on('connection', (socket) => {
     // })
 
     socket.on("player_data", (data) => {
-        //console.log(data);
-        console.log(data.username + data.position);
         let id = socket.id;
         let position = {};
         position[id] = data;
+        determine_order(data, order);
+        console.log(order);
         sendPositionToClients(position);
     }
     )
@@ -91,5 +92,23 @@ function sendUserListToClients() {
 function sendPositionToClients(data, id) {
     io.emit('receive_data', data);
 }
+
+function determine_order(data, order) {
+    if (order.length === 0) {
+        order.push(data); // Füge den ersten Fahrer hinzu, wenn das Array leer ist
+    } else {
+        // Finde die Position, an der der Fahrer eingefügt werden soll, basierend auf current_lap und position
+        let insertIndex = 0;
+        while (insertIndex < order.length &&
+            (order[insertIndex].current_lap > data.current_lap ||
+                (order[insertIndex].current_lap === data.current_lap && order[insertIndex].position > data.position))) {
+            insertIndex++;
+        }
+
+        // Füge den Fahrer an der berechneten Position ein
+        order.splice(insertIndex, 0, data);
+    }
+}
+
 
 
