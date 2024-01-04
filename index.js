@@ -74,20 +74,15 @@ io.on('connection', (socket) => {
     // })
 
     socket.on("player_data", (data) => {
-
-        // sio.emit('player_data', {'client_id: id, 'username': username,'playerX': playerX, 'position': position, 'player_num': player_num, 'speed': speed, 'nitro': nitro_is_on, 'current_lap': current_lap})
         let id = socket.id;
         let position = {};
-
-        determine_order(data);
         position[id] = data;
+        determine_order(data, order);
+        console.log(order);
         sendPositionToClients(position);
-
-        });
-    });
-server.listen(3000, '0.0.0.0', () => {
-    console.log('server running at http://35.246.239.15:3000');
-  });
+    }
+    )
+});
 
 function sendUserListToClients() {
     // Usernames als JSON
