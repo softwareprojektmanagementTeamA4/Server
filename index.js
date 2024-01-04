@@ -83,16 +83,16 @@ io.on('connection', (socket) => {
         sendPositionToClients(position);
 
         
-    // Update the order array
+
     let index = order.findIndex(player => player.id === data.id);
     if (index === -1) {
+        console.log("new player");
         order.push({ id: data.client_id, position: data.position, current_lap: data.current_lap });
     } else {
         order[index].position = data.position;
         order[index].current_lap = data.current_lap;
     }
 
-    // Sort the order array
     order.sort((a, b) => {
         if (a.current_lap === b.current_lap) {
             return a.position - b.position;
@@ -100,7 +100,6 @@ io.on('connection', (socket) => {
         return a.current_lap - b.current_lap;
     });
 
-    // Emit the updated order array to all clients
     io.emit("receive_order", order);
     }
     )
