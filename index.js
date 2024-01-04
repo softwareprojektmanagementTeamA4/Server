@@ -78,9 +78,30 @@ io.on('connection', (socket) => {
         // sio.emit('player_data', {'client_id: id, 'username': username,'playerX': playerX, 'position': position, 'player_num': player_num, 'speed': speed, 'nitro': nitro_is_on, 'current_lap': current_lap})
         let id = socket.id;
         let position = {};
-        determine_order(data);
+        // determine_order(data);
         position[id] = data;
         sendPositionToClients(position);
+
+        
+    // Update the order array
+    let index = order.findIndex(player => player.id === data.id);
+    if (index === -1) {
+        order.push({ id: data.client_id, position: data.position, current_lap: data.current_lap });
+    } else {
+        order[index].position = data.position;
+        order[index].current_lap = data.current_lap;
+    }
+
+    // Sort the order array
+    order.sort((a, b) => {
+        if (a.current_lap === b.current_lap) {
+            return a.position - b.position;
+        }
+        return a.current_lap - b.current_lap;
+    });
+
+    // Emit the updated order array to all clients
+    io.emit("receive_order", order);
     }
     )
 });
@@ -98,24 +119,24 @@ function sendPositionToClients(data, id) {
     io.emit('receive_data', data);
 }
 
-function determine_order(data) {
-    let index = order.findIndex(player => player.id === data.id);
-    if (index === -1) {
-        order.push({ id: data.client_id, position: data.position, current_lap: data.current_lap });
-    } else {
-        order[index].position = data.position;
-        order[index].current_lap = data.current_lap;
-    }
+// function determine_order(data) {
+//     let index = order.findIndex(player => player.id === data.id);
+//     if (index === -1) {
+//         order.push({ id: data.client_id, position: data.position, current_lap: data.current_lap });
+//     } else {
+//         order[index].position = data.position;
+//         order[index].current_lap = data.current_lap;
+//     }
 
-    order.sort((a, b) => {
-        if (a.current_lap === b.current_lap) {
-            return a.position - b.position;
-        }
-        return a.current_lap - b.current_lap;
-    });
+//     order.sort((a, b) => {
+//         if (a.current_lap === b.current_lap) {
+//             return a.position - b.position;
+//         }
+//         return a.current_lap - b.current_lap;
+//     });
 
-    io.emit("receive_order", order);
-}
+//     io.emit("receive_order", order);
+// }
 
 
 
