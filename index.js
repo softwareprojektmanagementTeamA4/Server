@@ -82,33 +82,7 @@ io.on('connection', (socket) => {
         position[id] = data;
         sendPositionToClients(position);
 
-        
-
-        for (let i = 0; i < order.length; i++) {
-            if (order[i].id === data.id) {
-                index = i;
-            }
-        }
-        
-        if (index === -1) {
-            console.log("new player");
-            order.push({ id: data.client_id, position: data.position, current_lap: data.current_lap });
-        } else {
-            order[index].position = data.position;
-            order[index].current_lap = data.current_lap;
-        }
-
-        order.sort((a, b) => {
-            if (a.current_lap === b.current_lap) {
-                return a.position - b.position;
-            }
-            return a.current_lap - b.current_lap;
-        });
-
-        io.emit("receive_order", order);
-        }
-        )
-});
+        });});
 server.listen(3000, '0.0.0.0', () => {
     console.log('server running at http://35.246.239.15:3000');
   });
@@ -142,5 +116,29 @@ function sendPositionToClients(data, id) {
 //     io.emit("receive_order", order);
 // }
 
+function determine_order(data) {
+    for (let i = 0; i < order.length; i++) {
+        if (order[i].id === data.id) {
+            index = i;
+        }
+    }
+    
+    if (index === -1) {
+        console.log("new player");
+        order.push({ id: data.client_id, position: data.position, current_lap: data.current_lap });
+    } else {
+        order[index].position = data.position;
+        order[index].current_lap = data.current_lap;
+    }
 
+    order.sort((a, b) => {
+        if (a.current_lap === b.current_lap) {
+            return a.position - b.position;
+        }
+        return a.current_lap - b.current_lap;
+    });
+
+    io.emit("receive_order", order);
+}
+    
 
