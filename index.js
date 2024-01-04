@@ -94,20 +94,20 @@ function sendPositionToClients(data, id) {
 }
 
 function determine_order(data, order) {
-    if (order.length === 0) {
-        order.push(data); // Füge den ersten Fahrer hinzu, wenn das Array leer ist
+    let index = order.findIndex(player => player.id === data.id);
+    if (index === -1) {
+        order.push({ id: data.id, position: data.position, current_lap: data.current_lap });
     } else {
-        // Finde die Position, an der der Fahrer eingefügt werden soll, basierend auf current_lap und position
-        let insertIndex = 0;
-        while (insertIndex < order.length &&
-            (order[insertIndex].current_lap > data.current_lap ||
-                (order[insertIndex].current_lap === data.current_lap && order[insertIndex].position > data.position))) {
-            insertIndex++;
-        }
-
-        // Füge den Fahrer an der berechneten Position ein
-        order.splice(insertIndex, 0, data.username);
+        order[index].position = data.position;
+        order[index].current_lap = data.current_lap;
     }
+
+    order.sort((a, b) => {
+        if (a.current_lap === b.current_lap) {
+            return a.position - b.position;
+        }
+        return a.current_lap - b.current_lap;
+    });
 }
 
 
