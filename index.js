@@ -70,6 +70,7 @@ io.on('connection', (socket) => {
 
     socket.on("player_data", (data) => {
         //console.log(data);
+        console.log(data.position);
         let id = socket.id;
         let position = {};
         position[id] = data;
@@ -90,4 +91,5 @@ function sendUserListToClients() {
 function sendPositionToClients(data, id) {
     io.emit('receive_data', data);
 }
-  
+
+
