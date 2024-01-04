@@ -81,6 +81,7 @@ io.on('connection', (socket) => {
         // determine_order(data);
         position[id] = data;
         sendPositionToClients(position);
+        determine_order(data);
 
         });});
 server.listen(3000, '0.0.0.0', () => {
