@@ -78,7 +78,7 @@ io.on('connection', (socket) => {
         // sio.emit('player_data', {'client_id: id, 'username': username,'playerX': playerX, 'position': position, 'player_num': player_num, 'speed': speed, 'nitro': nitro_is_on, 'current_lap': current_lap})
         let id = socket.id;
         let position = {};
-        // determine_order(data);
+        determine_order(data);
         position[id] = data;
         sendPositionToClients(position);
         // determine_order(data);
