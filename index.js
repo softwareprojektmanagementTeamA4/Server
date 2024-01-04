@@ -106,7 +106,7 @@ function determine_order(data, order) {
         }
 
         // Füge den Fahrer an der berechneten Position ein
-        order.splice(insertIndex, 0, data);
+        order.splice(insertIndex, 0, data.username);
     }
 }
 
