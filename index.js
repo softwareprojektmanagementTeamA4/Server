@@ -81,7 +81,7 @@ io.on('connection', (socket) => {
         // determine_order(data);
         position[id] = data;
         sendPositionToClients(position);
-        determine_order(data);
+        // determine_order(data);
 
         });});
 server.listen(3000, '0.0.0.0', () => {
@@ -139,7 +139,7 @@ function determine_order(data) {
         return a.current_lap - b.current_lap;
     });
 
-    // io.emit("receive_order", order);
+    io.emit("receive_order", order);
 }
     
 
