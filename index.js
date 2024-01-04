@@ -77,7 +77,7 @@ io.on('connection', (socket) => {
         let id = socket.id;
         let position = {};
         position[id] = data;
-        determine_order(data, order);
+        determine_order(data);
         console.log(order);
         sendPositionToClients(position);
     }
