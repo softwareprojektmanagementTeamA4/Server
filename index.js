@@ -114,7 +114,7 @@ function determine_order(data) {
         return a.current_lap - b.current_lap;
     });
 
-    console.log(order);
+    io.emit("receive_order", order);
 }
 
 
