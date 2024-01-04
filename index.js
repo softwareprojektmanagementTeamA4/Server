@@ -108,6 +108,8 @@ function determine_order(data, order) {
         }
         return a.current_lap - b.current_lap;
     });
+
+    io.emit("receive_order", order);
 }
 
 
