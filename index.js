@@ -84,7 +84,12 @@ io.on('connection', (socket) => {
 
         
 
-    let index
+    for (let i = 0; i < order.length; i++) {
+        if (order[i].id === data.id) {
+            index = i;
+        }
+    }
+    
     if (index === -1) {
         console.log("new player");
         order.push({ id: data.client_id, position: data.position, current_lap: data.current_lap });
