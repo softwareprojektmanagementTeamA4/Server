@@ -78,12 +78,13 @@ io.on('connection', (socket) => {
         // sio.emit('player_data', {'client_id: id, 'username': username,'playerX': playerX, 'position': position, 'player_num': player_num, 'speed': speed, 'nitro': nitro_is_on, 'current_lap': current_lap})
         let id = socket.id;
         let position = {};
+
         determine_order(data);
         position[id] = data;
         sendPositionToClients(position);
-        // determine_order(data);
 
-        });});
+        });
+    });
 server.listen(3000, '0.0.0.0', () => {
     console.log('server running at http://35.246.239.15:3000');
   });
@@ -139,7 +140,7 @@ function determine_order(data) {
         return a.current_lap - b.current_lap;
     });
 
-    io.emit("receive_order", order);
+    // io.emit("receive_order", order);
 }
     
 
