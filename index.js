@@ -127,7 +127,7 @@ function determine_order(data) {
     
     if (index === -1) {
         console.log("new player");
-        order.push({ id: data.client_id, position: data.position, current_lap: data.current_lap });
+        order.push({ id: data.id, position: data.position, current_lap: data.current_lap });
     } else {
         order[index].position = data.position;
         order[index].current_lap = data.current_lap;
