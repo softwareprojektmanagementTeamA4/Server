@@ -8,7 +8,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server);
 let hostID = null;
-let order = {};
+let order = [];
 let cars_data;
 
 
