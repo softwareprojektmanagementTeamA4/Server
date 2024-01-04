@@ -70,7 +70,7 @@ io.on('connection', (socket) => {
 
     socket.on("player_data", (data) => {
         //console.log(data);
-        console.log(data.position);
+        console.log(data.username + data.position);
         let id = socket.id;
         let position = {};
         position[id] = data;
