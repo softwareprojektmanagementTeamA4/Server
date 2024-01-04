@@ -63,6 +63,10 @@ io.on('connection', (socket) => {
     socket.on("request_start_position", () => {
         io.emit("receive_start_position", cars_data);
     })
+
+    socket.on("request_order", () => {
+        io.emit("receive_order", order);
+    })
         
 
     // socket.on("getHostID", () => {
@@ -70,11 +74,12 @@ io.on('connection', (socket) => {
     // })
 
     socket.on("player_data", (data) => {
+
+        // sio.emit('player_data', {'client_id: id, 'username': username,'playerX': playerX, 'position': position, 'player_num': player_num, 'speed': speed, 'nitro': nitro_is_on, 'current_lap': current_lap})
         let id = socket.id;
         let position = {};
+        determine_order(data);
         position[id] = data;
-        determine_order(data, order);
-        console.log(order);
         sendPositionToClients(position);
     }
     )
@@ -93,21 +98,23 @@ function sendPositionToClients(data, id) {
     io.emit('receive_data', data);
 }
 
-function determine_order(data, order) {
-    if (order.length === 0) {
-        order.push(data); // Füge den ersten Fahrer hinzu, wenn das Array leer ist
+function determine_order(data) {
+    let index = order.findIndex(player => player.id === data.id);
+    if (index === -1) {
+        order.push({ id: data.id, position: data.position, current_lap: data.current_lap });
     } else {
-        // Finde die Position, an der der Fahrer eingefügt werden soll, basierend auf current_lap und position
-        let insertIndex = 0;
-        while (insertIndex < order.length &&
-            (order[insertIndex].current_lap > data.current_lap ||
-                (order[insertIndex].current_lap === data.current_lap && order[insertIndex].position > data.position))) {
-            insertIndex++;
-        }
-
-        // Füge den Fahrer an der berechneten Position ein
-        order.splice(insertIndex, 0, data.username);
+        order[index].position = data.position;
+        order[index].current_lap = data.current_lap;
     }
+
+    order.sort((a, b) => {
+        if (a.current_lap === b.current_lap) {
+            return a.position - b.position;
+        }
+        return a.current_lap - b.current_lap;
+    });
+
+    console.log(order);
 }
 
 
