@@ -139,7 +139,7 @@ function determine_order(data) {
         return a.current_lap - b.current_lap;
     });
 
-    io.emit("receive_order", order);
+    // io.emit("receive_order", order);
 }
     
 
