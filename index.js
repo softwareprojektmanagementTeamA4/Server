@@ -83,7 +83,10 @@ io.on('connection', (socket) => {
         sendPositionToClients(position);
         console.log(data);
 
-        let index = order.findIndex(player => player.id === data.client_id);
+        for (let i = 0; i < order.length; i++) {
+            if (order[i].id == socket.id){
+                index = i;
+            }
         if (index === -1) {
             console.log("new player");
             order.push({ id: data.client_id, position: data.position, current_lap: data.current_lap });
@@ -101,8 +104,10 @@ io.on('connection', (socket) => {
 
         io.emit("receive_order", order);
         }
-        )
-});
+        
+    });
+
+
 server.listen(3000, '0.0.0.0', () => {
     console.log('server running at http://35.246.239.15:3000');
   });
@@ -137,4 +142,4 @@ function sendPositionToClients(data, id) {
 // }
 
 
-
+});
