@@ -63,10 +63,6 @@ io.on('connection', (socket) => {
     socket.on("request_start_position", () => {
         io.emit("receive_start_position", cars_data);
     })
-
-    socket.on("request_order", () => {
-        io.emit("receive_order", order);
-    })
         
 
     // socket.on("getHostID", () => {
@@ -77,12 +73,15 @@ io.on('connection', (socket) => {
         let id = socket.id;
         let position = {};
         position[id] = data;
-        determine_order(data);
+        determine_order(data, order);
         console.log(order);
         sendPositionToClients(position);
     }
     )
 });
+server.listen(3000, '0.0.0.0', () => {
+    console.log('server running at http://35.246.239.15:3000');
+  });
 
 function sendUserListToClients() {
     // Usernames als JSON
@@ -94,48 +93,21 @@ function sendPositionToClients(data, id) {
     io.emit('receive_data', data);
 }
 
-// function determine_order(data) {
-//     let index = order.findIndex(player => player.id === data.id);
-//     if (index === -1) {
-//         order.push({ id: data.client_id, position: data.position, current_lap: data.current_lap });
-//     } else {
-//         order[index].position = data.position;
-//         order[index].current_lap = data.current_lap;
-//     }
-
-//     order.sort((a, b) => {
-//         if (a.current_lap === b.current_lap) {
-//             return a.position - b.position;
-//         }
-//         return a.current_lap - b.current_lap;
-//     });
-
-//     io.emit("receive_order", order);
-// }
-
-function determine_order(data) {
-    // for (let i = 0; i < order.length; i++) {
-    //     if (order[i].id === data.id) {
-    //         index = i;
-    //     }
-    // }
-    
-    if (index === -1) {
-        console.log("new player");
-        order.push({ id: data.id, position: data.position, current_lap: data.current_lap });
+function determine_order(data, order) {
+    if (order.length === 0) {
+        order.push(data); // Füge den ersten Fahrer hinzu, wenn das Array leer ist
     } else {
-        order[index].position = data.position;
-        order[index].current_lap = data.current_lap;
-    }
-
-    order.sort((a, b) => {
-        if (a.current_lap === b.current_lap) {
-            return a.position - b.position;
+        // Finde die Position, an der der Fahrer eingefügt werden soll, basierend auf current_lap und position
+        let insertIndex = 0;
+        while (insertIndex < order.length &&
+            (order[insertIndex].current_lap > data.current_lap ||
+                (order[insertIndex].current_lap === data.current_lap && order[insertIndex].position > data.position))) {
+            insertIndex++;
         }
-        return a.current_lap - b.current_lap;
-    });
 
-    // io.emit("receive_order", order);
+        // Füge den Fahrer an der berechneten Position ein
+        order.splice(insertIndex, 0, data.username);
+    }
 }
-    
+
 
