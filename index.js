@@ -101,7 +101,7 @@ function sendPositionToClients(data, id) {
 function determine_order(data) {
     let index = order.findIndex(player => player.id === data.id);
     if (index === -1) {
-        order.push({ id: data.id, position: data.position, current_lap: data.current_lap });
+        order.push({ id: data.client_id, position: data.position, current_lap: data.current_lap });
     } else {
         order[index].position = data.position;
         order[index].current_lap = data.current_lap;
