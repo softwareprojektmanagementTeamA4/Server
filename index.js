@@ -79,11 +79,16 @@ io.on('connection', (socket) => {
         player_ready[clientID] = is_ready;
         // Check if all players are ready
         console.log(player_ready);
+        all_ready = false;
         for (let key in player_ready) {
             if (player_ready[key] == true) {
-                io.to(hostID).emit("all_players_ready", true);
+                all_ready = true;
+            } else {
+                all_ready = false;
+                break;
             }
         }
+        io.to(hostID).emit("all_players_ready", all_ready);
 
     })
 
