@@ -67,6 +67,9 @@ io.on('connection', (socket) => {
         io.emit("receive_start_position", data);
     })
 
+    socket.on("request_start_position", () => {
+        io.emit("receive_start_position", cars_data);
+    })
 
     socket.on("player_data", (data) => {
         let id = socket.id;
