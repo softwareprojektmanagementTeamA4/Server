@@ -47,6 +47,8 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('user disconnected');
         delete connectedUsers[clientID];
+        delete player_ready[clientID];
+        sendUserListToClients();
         console.log("connectedUsers: ", JSON.stringify(connectedUsers, null, 2));
     });
 
@@ -90,6 +92,10 @@ io.on('connection', (socket) => {
         }
         io.to(hostID).emit("all_players_ready", all_ready);
 
+    })
+
+    socket.on("game_start", () => {
+        io.emit("game_start");
     })
 
 
