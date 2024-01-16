@@ -10,6 +10,7 @@ const io = new Server(server);
 let hostID = null;
 let order = [];
 let cars_data;
+let player_ready = {};
 
 
 app.get('/', (req, res) => {
@@ -29,11 +30,15 @@ io.on('connection', (socket) => {
         hostID = clientID;
     }
 
+    if (clientID != hostID) {
+        player_ready[clientID] = false;
+    }
+
     io.to(clientID).emit("getHostID", hostID);
     connectedUsers[clientID] = username;
 
     
-    //console.log("connectedUsers: " + username);**
+    
     sendUserListToClients();
 
     // Print connected users
@@ -60,14 +65,6 @@ io.on('connection', (socket) => {
         io.emit("receive_start_position", data);
     })
 
-    socket.on("request_start_position", () => {
-        io.emit("receive_start_position", cars_data);
-    })
-        
-
-    // socket.on("getHostID", () => {
-    //     io.to(clientID).emit();
-    // })
 
     socket.on("player_data", (data) => {
         let id = socket.id;
@@ -77,6 +74,20 @@ io.on('connection', (socket) => {
         sendPositionToClients(position);
     }
     )
+
+    socket.on("player_ready", (is_ready) => {
+        player_ready[clientID] = is_ready;
+        // Check if all players are ready
+        console.log(player_ready);
+        for (let key in player_ready) {
+            if (player_ready[key] == true) {
+                io.to(hostID).emit("all_players_ready", true);
+            }
+        }
+
+    })
+
+
 });
 server.listen(3000, '0.0.0.0', () => {
     console.log('server running at http://35.246.239.15:3000');
