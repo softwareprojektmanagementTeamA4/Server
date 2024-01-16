@@ -61,6 +61,10 @@ io.on('connection', (socket) => {
         io.emit("receive_npc_car_data", data);
     })
 
+    socket.on("im_host", () => {
+        hostID = clientID;}
+        );
+
     socket.on("player_start_positions_data", (data) => {
         //console.log(data);
         cars_data = data;
