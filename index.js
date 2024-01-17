@@ -51,6 +51,7 @@ io.on('connection', (socket) => {
         delete player_ready[clientID];
         // Delete order
         order = order.filter(player => player.id !== clientID);
+        console.log("order: ", order);
         sendUserListToClients();
         console.log("connectedUsers: ", JSON.stringify(connectedUsers, null, 2));
     });
@@ -60,7 +61,6 @@ io.on('connection', (socket) => {
     })
 
     socket.on("npc_car_data", (data) => {
-        console.log(data);
         io.emit("receive_npc_car_data", data);
     })
 
