@@ -38,6 +38,7 @@ io.on('connection', (socket) => {
     connectedUsers[clientID] = username;
 
     
+
     
     sendUserListToClients();
 
@@ -81,6 +82,7 @@ io.on('connection', (socket) => {
         position[id] = data;
         determine_order(data, order);
         sendPositionToClients(position);
+        console.log("test");
     }
     )
 
