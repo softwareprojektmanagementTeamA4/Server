@@ -69,7 +69,7 @@ io.on('connection', (socket) => {
         );
 
     socket.on("player_start_positions_data", (data) => {
-        //console.log(data);
+        console.log(data);
         cars_data = data;
         io.emit("receive_start_position", data);
     })
