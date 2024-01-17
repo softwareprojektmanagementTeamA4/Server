@@ -58,7 +58,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on("npc_car_data", (data) => {
-       // console.log(data);
+        console.log(data);
         io.emit("receive_npc_car_data", data);
     })
 
@@ -82,7 +82,6 @@ io.on('connection', (socket) => {
         position[id] = data;
         determine_order(data, order);
         sendPositionToClients(position);
-        console.log("test");
     }
     )
 
