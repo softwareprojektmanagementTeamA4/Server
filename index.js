@@ -49,7 +49,8 @@ io.on('connection', (socket) => {
         console.log('user disconnected');
         delete connectedUsers[clientID];
         delete player_ready[clientID];
-        delete order[clientID];
+        // Delete order
+        order = order.filter(player => player.id !== clientID);
         sendUserListToClients();
         console.log("connectedUsers: ", JSON.stringify(connectedUsers, null, 2));
     });
