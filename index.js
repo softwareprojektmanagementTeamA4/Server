@@ -69,6 +69,10 @@ io.on('connection', (socket) => {
         io.emit("receive_npc_car_data", data);
     })
 
+    socket.on("updateUserList", () => {
+        sendUserListToClients();
+    });
+
     socket.on("im_host", () => {
         hostID = clientID;}
         );
