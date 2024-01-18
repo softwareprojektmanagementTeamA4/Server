@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    if (Object.keys(connectedUsers).length >= 1) {
+    if (Object.keys(connectedUsers).length >= 3) {
         socket.disconnect(true);
         return;
     }
