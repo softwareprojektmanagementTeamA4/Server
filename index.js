@@ -25,6 +25,10 @@ io.on('connection', (socket) => {
     const username = socket.handshake.headers.username;
     // Add connected user
     
+    if (Object.keys(connectedUsers).length <= 1) {
+        socket.disconnect(true);
+    }
+
     //if connectedUsers is empty
     if (Object.keys(connectedUsers).length == 0) {
         hostID = clientID;
