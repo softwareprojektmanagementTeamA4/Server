@@ -109,6 +109,9 @@ io.on('connection', (socket) => {
     )
 
     socket.on("player_ready", (is_ready) => {
+        if (clientID == hostID) {
+            player_ready[clientID] = true;
+        }
         player_ready[clientID] = is_ready;
         // Check if all players are ready
         console.log(player_ready);
