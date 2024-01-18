@@ -54,6 +54,15 @@ io.on('connection', (socket) => {
         console.log('user disconnected');
         delete connectedUsers[clientID];
         delete player_ready[clientID];
+        if (clientID == hostID) {
+            hostID = null;
+            for (let key in connectedUsers) {
+                hostID = key;
+                break;
+            }
+            io.to(hostID).emit("getHostID", hostID);
+        }
+
         // Delete order
         order = order.filter(player => player.id !== clientID);
         console.log("order: ", order);
