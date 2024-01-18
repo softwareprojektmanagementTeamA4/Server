@@ -70,6 +70,10 @@ io.on('connection', (socket) => {
     })
 
     socket.on("updateUserList", () => {
+        // delay 
+        setTimeout(() => {
+            sendUserListToClients();
+        }, 500);
         sendUserListToClients();
     });
 
