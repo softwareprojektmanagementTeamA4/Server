@@ -27,6 +27,7 @@ io.on('connection', (socket) => {
     
     if (Object.keys(connectedUsers).length >= 1) {
         socket.disconnect(true);
+        return;
     }
 
     //if connectedUsers is empty
