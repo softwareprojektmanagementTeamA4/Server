@@ -25,7 +25,7 @@ io.on('connection', (socket) => {
     const username = socket.handshake.headers.username;
     // Add connected user
     
-    if (Object.keys(connectedUsers).length <= 1) {
+    if (Object.keys(connectedUsers).length > 1) {
         socket.disconnect(true);
     }
 
