@@ -109,15 +109,12 @@ io.on('connection', (socket) => {
     )
 
     socket.on("player_ready", (is_ready) => {
-        if (clientID == hostID) {
-            player_ready[clientID] = true;
-        }
         player_ready[clientID] = is_ready;
         // Check if all players are ready
         console.log(player_ready);
         all_ready = false;
         for (let key in player_ready) {
-            if (player_ready[key] == true) {
+            if (player_ready[key] == true || key == hostID) {
                 all_ready = true;
             } else {
                 all_ready = false;
