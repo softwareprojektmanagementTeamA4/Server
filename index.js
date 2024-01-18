@@ -73,8 +73,7 @@ io.on('connection', (socket) => {
         // delay 
         setTimeout(() => {
             sendUserListToClients();
-        }, 500);
-        sendUserListToClients();
+        }, 1000);
     });
 
     socket.on("im_host", () => {
