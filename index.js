@@ -18,6 +18,10 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
+    if (Object.keys(connectedUsers).length >= 1) {
+        socket.disconnect(true);
+        return;
+    }
     const clientID = socket.id;
     io.to(clientID).emit("getPlayerID", clientID);
     // console.log(clientID);
@@ -25,10 +29,6 @@ io.on('connection', (socket) => {
     const username = socket.handshake.headers.username;
     // Add connected user
     
-    if (Object.keys(connectedUsers).length >= 1) {
-        socket.disconnect(true);
-        return;
-    }
 
     //if connectedUsers is empty
     if (Object.keys(connectedUsers).length == 0) {
