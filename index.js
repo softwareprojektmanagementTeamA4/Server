@@ -25,26 +25,27 @@ io.on("connection", (socket) => {
   const clientID = socket.id;
   io.to(clientID).emit("getPlayerID", clientID);
   // Read username sent by the client
-  const username = socket.handshake.headers.username;
-
+  
   // Add connected user:
-
+  
   //if connectedUsers is empty make the first user the host
   if (Object.keys(connectedUsers).length == 0) {
     hostID = clientID;
   }
-
+  
   // If the client is not the host, set his ready status to false
   if (clientID != hostID) {
     player_ready[clientID] = false;
   }
-
+  
   // Send hostID back to client
   io.to(clientID).emit("getHostID", hostID);
+  
+  const username = socket.handshake.headers.username;
   connectedUsers[clientID] = username;
-
   // Send updated user list to all clients
   sendUserListToClients();
+
 
   // Print connected users
   console.log("connectedUsers: ", JSON.stringify(connectedUsers, null, 2));
@@ -55,6 +56,7 @@ io.on("connection", (socket) => {
     // Remove user from connectedUsers
     delete connectedUsers[clientID];
     delete player_ready[clientID];
+    
     // If the disconnected user is the host, set the new host
     if (clientID == hostID) {
       hostID = null;
